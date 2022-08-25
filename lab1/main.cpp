@@ -2,7 +2,7 @@
 #include "stack.h"
 using namespace std;
 
-void push_num(stack &stk, int num);
+stack push_num(int num);
 void dig2txt(stack stk);
 bool palindrome(stack stk);
 void reverse(stack stk);
@@ -23,7 +23,7 @@ int main()
             case 1:
                 cout << "Enter the number (max 5 digits): ";
                 cin >> num;
-                push_num(stk, num);
+                stk = push_num(num);
                 break;
             case 2:
                 dig2txt(stk);
@@ -44,13 +44,15 @@ int main()
     return 0;
 }
 
-void push_num(stack &stk, int num)
+stack push_num(int num)
 {
+    stack stk;
     while (num != 0)
     {
         stk.push(num % 10);
         num /= 10;
     }
+    return stk;
 }
 
 void dig2txt(stack stk)
