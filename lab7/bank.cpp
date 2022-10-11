@@ -87,7 +87,7 @@ public:
         return 1;
     }
 
-    int credit(string accNum, int amount, int fee = 0)
+    int credit(string accNum, float amount, int fee = 0)
     {
         int index = search(accNum);
         if (index == -1)
@@ -116,7 +116,7 @@ public:
         }
     }
 
-    int debit(string accNum, int amount, int fee = 0)
+    int debit(string accNum, float amount, int fee = 0)
     {
         int index = search(accNum);
         if (index == -1)
@@ -170,11 +170,21 @@ public:
 
     void set_interest(float interest)
     {
+        if (interest < 0)
+        {
+            cout << "Invalid interest: " << interest << endl;
+            return;
+        }
         this->interest = interest;
     }
 
     float simple_interest(string accNum, int yr)
     {
+        if (yr < 0)
+        {
+            cout << "Invalid number of years: " << yr << endl;
+            return -1.0f;
+        }
         int index = search(accNum);
         if (index == -1)
         {
@@ -199,6 +209,11 @@ public:
 
     void set_fee(int fee)
     {
+        if (fee < 0)
+        {
+            cout << "Invalid fee: " << fee << endl;
+            return;
+        }
         this->fee = fee;
     }
 
@@ -219,13 +234,13 @@ public:
             cout << "\tTransaction Fee: " << fee << endl;
     }
 
-    void credit(string accNum, int amount)
+    void credit(string accNum, float amount)
     {
         Bank::credit(accNum, amount, fee);
         cout << "Transaction Fee: " << fee << endl;
     }
 
-    void debit(string accNum, int amount)
+    void debit(string accNum, float amount)
     {
         Bank::debit(accNum, amount, fee);
         cout << "Transaction Fee: " << fee << endl;
