@@ -163,8 +163,8 @@ void checkExp(string exp_str)
         else
             throw i;
     }
-    if (brackets != 0)
-        throw exp_str.size();
+    if (brackets != 0 || prev == "sym")
+        throw (int)exp_str.size();
 }
 
 int precedence(char sym)
