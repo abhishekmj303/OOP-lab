@@ -113,7 +113,7 @@ char stackPop(Queue &q)
 
 string charType(char ch)
 {
-    if (ch == '+' || ch == '-' || ch == '^' || ch == '*' || ch == '/')
+    if (ch == '+' || ch == '-' || ch == '*' || ch == '/')
         return "sym";
     else if ((ch >= 'A' && ch <= 'Z') || (ch >= 'a' && ch <= 'z'))
         return "alpha";
