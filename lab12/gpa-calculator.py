@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import messagebox
 
 def create_label(text: str, row: int, column: int, inplace=False):
-    label = tk.Label(main, text=text)
+    label = tk.Label(main, text=text, bg="lightblue")
     label.grid(row=row, column=column)
 
     if inplace:
@@ -16,7 +16,7 @@ def create_entry(row: int, column: int):
     return entry
 
 def create_button(text: str, cmd: object, row: int, column: int, inplace=False):
-    button = tk.Button(main, text=text, command=cmd, bg="lightgreen")
+    button = tk.Button(main, text=text, command=cmd, bg="lightgrey")
     button.grid(row=row, column=column)
 
     if inplace:
@@ -75,9 +75,11 @@ def calc_result():
     if not check_info():
         return
     
-    grades_obt = main_ui["table"][("Subject", "Grade")]["val"]
+    grades = {"S": 10, "A": 9, "B": 8, "C": 7, "D": 6, "E": 5, "U": 0, "I": 0, "W": 0}
+    
+    grades_obt = table_ui[("Subject", "Grade")]["val"]
     sub_credits = marks_table["Sub Credit"]
-    credits_obt = main_ui["table"]["Credit Obtained"]["val"]
+    credits_obt = table_ui["Credit Obtained"]["val"]
 
     total_cred = 0
     total_sub_cred = 0
@@ -92,8 +94,8 @@ def calc_result():
         total_sub_cred += int(s)
     
     sgpa = round(total_cred / total_sub_cred, 2)
-    main_ui["result"]["Total Credit"]["val"].configure(text=total_cred)
-    main_ui["result"]["SGPA"]["val"].configure(text=sgpa)
+    result_ui["Total Credit"]["val"].configure(text=total_cred)
+    result_ui["SGPA"]["val"].configure(text=sgpa)
 
 def validate_grade(inp: str):
     valid_grades = ["S", "A", "B", "C", "D", "U", "W", "I", ""]
@@ -104,11 +106,15 @@ def validate_grade(inp: str):
 
 main = tk.Tk()
 main.title("Marksheet")
+main.configure(bg="lightblue")
+
+# All the widgets ar stored as key-value pairs in the dictionary,
+# where key is the text and value is the widget-object
 
 main_ui = {}
-
 stud_info = [("Name", 0, 0), ("Roll.No", 1, 0), ("Reg.No", 0, 3)]
 
+table_ui = {}
 marks_table = {
     "Srl.No": ["1", "2", "3", "4"],
     ("Subject", "Grade"): ["CS 201", "CS 202", "MA 201", "EC 201"],
@@ -116,26 +122,26 @@ marks_table = {
     "Credit Obtained": [""]*4,
 }
 
+result_ui = {}
 result = {
     "Total Credit": (7, 3),
     "SGPA": (8, 3)
 }
 
-grades = {"S": 10, "A": 9, "B": 8, "C": 7, "D": 6, "E": 5, "U": 0, "I": 0, "W": 0}
-
+# Create main_ui
 for s in stud_info:
     create_frame(s[0], s[1], s[2], inplace=True)
 
-create_table(marks_table, 2, 0, inplace=True)
+# Create table_ui
+table_ui = create_table(marks_table, 2, 0)
 
-result_ui = {}
+# Create result_ui
 for key, value in result.items():
     label = create_label(key, value[0], value[1])
     value = create_label("", value[0], value[1]+1)
     result_ui[key] = {"label": label, "val": value}
 
-main_ui["result"] = result_ui
-
+# Create submit button
 create_button("Submit", calc_result, 8, 1, inplace=True)
 
 main.mainloop()
